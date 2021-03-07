@@ -7,6 +7,6 @@ export const config: TypeOrmModuleOptions = {
     port: 3306,
     host: '127.0.0.1',
     database: 'test',
-    synchronize: true,
+    synchronize: false,
     entities: ['dist/**/*.entity{.ts,.js}'],
 };
