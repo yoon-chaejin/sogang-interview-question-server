@@ -20,7 +20,7 @@ export class IntvQuestionController {
     } 
 
     @Post()
-    async create(@Body() intvQuestionData: CreateIntvQuestionDto): Promise<IntvQuestion> {
+    async create(@Body() intvQuestionData: CreateIntvQuestionDto): Promise<IntvQuestion []> {
         return this.intvQuestionService.create(intvQuestionData);
     }
 }

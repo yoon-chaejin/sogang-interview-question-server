@@ -1,6 +1,6 @@
 import { IsString } from "class-validator";
 
 export class CreateIntvQuestionDto {
-    @IsString()
-    readonly content: string;
+    @IsString({ each: true })
+    readonly content: string[];
 }

@@ -19,14 +19,18 @@ export class IntvQuestionService {
         return await this.intvQuestionRepository.findOneById(id);
     }
 
-    async create(intvQuestionData: CreateIntvQuestionDto): Promise<IntvQuestion> {
+    async create(intvQuestionData: CreateIntvQuestionDto): Promise<IntvQuestion[]> {
         const { content } = intvQuestionData;
 
-        const intvQuestion = new IntvQuestion();
-        intvQuestion.content = content;
+        const intvQuestions = []
+        for ( const item of content) {
+            const intvQuestion = new IntvQuestion();
+            intvQuestion.content = item;
+            intvQuestions.push(intvQuestion);
+        }
 
-        await this.intvQuestionRepository.save(intvQuestion);
+        await this.intvQuestionRepository.save(intvQuestions);
 
-        return intvQuestion;
+        return intvQuestions;
     } 
 }
