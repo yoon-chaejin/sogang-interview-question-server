@@ -33,4 +33,12 @@ export class IntvQuestionService {
 
         return intvQuestions;
     } 
+
+    async findByTagId(id: number): Promise<IntvQuestion []> {
+        return await this.intvQuestionRepository
+            .createQueryBuilder('intv_question')
+            .leftJoinAndSelect('intv_question.tags', 'tag')
+            .where('tag.id = :id', { id: id})
+            .getMany();
+    }
 }

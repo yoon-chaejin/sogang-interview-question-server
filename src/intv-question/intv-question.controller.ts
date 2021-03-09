@@ -23,4 +23,9 @@ export class IntvQuestionController {
     async create(@Body() intvQuestionData: CreateIntvQuestionDto): Promise<IntvQuestion []> {
         return this.intvQuestionService.create(intvQuestionData);
     }
+
+    @Get('tag/:id')
+    async findByTagId(@Param('id') id): Promise<IntvQuestion []> {
+        return this.intvQuestionService.findByTagId(id);
+    }
 }
