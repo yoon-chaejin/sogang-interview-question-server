@@ -12,7 +12,14 @@ export class TagService {
     ) {}
 
     async findAll(): Promise<Tag []> {
-        return await this.tagRepository.find();
+        return await this.tagRepository
+            .createQueryBuilder('tag')
+            .leftJoinAndSelect('tag.intvQuestions', 'intv_question')
+            .groupBy('tag.id')
+            .select('tag.id')
+            .addSelect('tag.name')
+            .addSelect('COUNT("tag.id")', 'count')
+            .getRawMany();
     }
 
     async findOneById(id: number): Promise<Tag> {
