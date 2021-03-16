@@ -16,8 +16,8 @@ export class TagService {
             .createQueryBuilder('tag')
             .leftJoinAndSelect('tag.intvQuestions', 'intv_question')
             .groupBy('tag.id')
-            .select('tag.id')
-            .addSelect('tag.name')
+            .select('tag.id', 'id')
+            .addSelect('tag.name', 'name')
             .addSelect('COUNT("tag.id")', 'count')
             .getRawMany();
     }
