@@ -10,22 +10,22 @@ export class IntvQuestionController {
     constructor(private readonly intvQuestionService: IntvQuestionService) {}
 
     @Get()
-    findAll(): Promise<IntvQuestion []> {
-        return this.intvQuestionService.findAll();
+    async findAll(): Promise<IntvQuestion []> {
+        return await this.intvQuestionService.findAll();
     }
 
     @Get(':id')
-    findOneById(@Param() params): Promise<IntvQuestion> {
-        return this.intvQuestionService.findOneById(params.id);
+    async findOneById(@Param() params): Promise<IntvQuestion> {
+        return await this.intvQuestionService.findOneById(params.id);
     } 
 
     @Post()
     async create(@Body() intvQuestionData: CreateIntvQuestionDto): Promise<IntvQuestion []> {
-        return this.intvQuestionService.create(intvQuestionData);
+        return await this.intvQuestionService.create(intvQuestionData);
     }
 
     @Get('tag/:id')
     async findByTagId(@Param('id') id): Promise<IntvQuestion []> {
-        return this.intvQuestionService.findByTagId(id);
+        return await this.intvQuestionService.findByTagId(id);
     }
 }

@@ -21,6 +21,6 @@ export class TagController {
 
     @Post()
     async create(@Body() tagData: CreateTagDto): Promise<Tag> {
-        return this.tagService.create(tagData);
+        return await this.tagService.create(tagData);
     }
 }
