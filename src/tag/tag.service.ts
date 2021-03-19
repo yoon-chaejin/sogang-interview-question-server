@@ -36,4 +36,16 @@ export class TagService {
 
         return tag;
     }
+    
+    async findOrCreateTagByTagName(tagName: string): Promise<Tag> {
+        let tag = await this.tagRepository.findOneByName(tagName);
+
+        if (!tag) {
+            tag = new Tag();
+            tag.name = tagName;
+            tag = await this.tagRepository.save(tag);
+        }
+        
+        return tag;
+    }
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TagService } from 'src/tag/tag.service';
 import { CreateIntvQuestionDto } from './dto/create-intv-question.dto';
+import { CreateIntvQuestionsWithTagsDto } from './dto/create-intv-questions-with-tags.dto';
 import { IntvQuestion } from './entities/intv-question.entity';
 import { IntvQuestionRepository } from './repository/IntvQuestionRepository';
 
@@ -9,6 +11,7 @@ export class IntvQuestionService {
     constructor (
         @InjectRepository(IntvQuestion)
         private readonly intvQuestionRepository: IntvQuestionRepository,
+        private tagService: TagService,
     ) {}
 
     async findAll(): Promise<IntvQuestion []> {
@@ -33,6 +36,23 @@ export class IntvQuestionService {
 
         return intvQuestions;
     } 
+
+    async createIntvQuestionsWithTags(intvQuestionsWithTags: CreateIntvQuestionsWithTagsDto) {
+        const { newItems } = intvQuestionsWithTags;
+        for (const item of newItems) {
+            const { category, questions } = item;
+
+            const tag = await this.tagService.findOrCreateTagByTagName(category);
+            
+            for (const question of questions) {
+                const intvQuestion = new IntvQuestion();
+                intvQuestion.content = question;
+                intvQuestion.tags = [tag];
+                await this.intvQuestionRepository.save(intvQuestion);
+            }
+        }
+        return;
+    }
 
     async findByTagId(id: number): Promise<IntvQuestion []> {
         return await this.intvQuestionRepository

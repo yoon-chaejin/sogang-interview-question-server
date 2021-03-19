@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateIntvQuestionDto } from './dto/create-intv-question.dto';
+import { CreateIntvQuestionsWithTagsDto } from './dto/create-intv-questions-with-tags.dto';
 import { IntvQuestion } from './entities/intv-question.entity';
 import { IntvQuestionService } from './intv-question.service';
 
@@ -22,6 +23,12 @@ export class IntvQuestionController {
     @Post()
     async create(@Body() intvQuestionData: CreateIntvQuestionDto): Promise<IntvQuestion []> {
         return await this.intvQuestionService.create(intvQuestionData);
+    }
+
+    @Post('with-tags')
+    async createIntvQuestionsWithTags(@Body() intvQuestionsWithTagsData: CreateIntvQuestionsWithTagsDto) {
+        await this.intvQuestionService.createIntvQuestionsWithTags(intvQuestionsWithTagsData);
+        return "SUCESS";
     }
 
     @Get('tag/:id')

@@ -6,4 +6,7 @@ export class TagRepository extends Repository<Tag> {
     findOneById(id: number) {
         return this.findOne({ id });
     }
+    findOneByName(name: string) {
+        return this.findOne({ name });
+    }
 }
