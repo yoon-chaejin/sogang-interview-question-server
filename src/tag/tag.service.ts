@@ -14,7 +14,7 @@ export class TagService {
     async findAll(): Promise<Tag []> {
         return await this.tagRepository
             .createQueryBuilder('tag')
-            .leftJoinAndSelect('tag.intvQuestions', 'intv_question')
+            .innerJoinAndSelect('tag.intvQuestions', 'intv_question')
             .groupBy('tag.id')
             .select('tag.id', 'id')
             .addSelect('tag.name', 'name')
