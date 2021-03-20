@@ -9,5 +9,6 @@ export default () => ({
         database: process.env.DB_SCHEMA,
         synchronize: false,
         entities: ['dist/**/*.entity{.ts,.js}'],
-    }
+    },
+    secret: process.env.JWT_SECRET,
 })
