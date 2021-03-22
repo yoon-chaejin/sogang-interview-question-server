@@ -1,11 +1,13 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class MailService {
     constructor(
-        private readonly mailerService: MailerService
+        private readonly mailerService: MailerService,
+        private readonly configService: ConfigService,
     ) {}
 
     async sendSogangAuthenticationMail(user: User, mail: string, token: string) {
@@ -13,7 +15,7 @@ export class MailService {
         console.log('mail', mail);
         console.log('token', token);
 
-        const url = 'http://localhost:3101/users/'+user.id+'?token='+token;
+        const url = this.configService.get('url') + 'users/'+user.id+'?token='+token;
         console.log('url', url);
         this.mailerService.sendMail({
             to: mail,
