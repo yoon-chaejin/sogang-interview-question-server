@@ -14,5 +14,6 @@ export default () => ({
     nodemailer: {
         user: process.env.NODEMAILER_USER,
         password: process.env.NODEMAILER_PASSWORD,
-    }
+    },
+    url: process.env.API_BASE_URL,
 })
