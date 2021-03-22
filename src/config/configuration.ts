@@ -1,5 +1,5 @@
 export default () => ({
-    port: parseInt(process.env.PORT, 10) || 3101,
+    port: 3101,
     database: {
         type: 'mariadb',
         username: process.env.DB_USERNAME,
@@ -11,4 +11,8 @@ export default () => ({
         entities: ['dist/**/*.entity{.ts,.js}'],
     },
     secret: process.env.JWT_SECRET,
+    nodemailer: {
+        user: process.env.NODEMAILER_USER,
+        password: process.env.NODEMAILER_PASSWORD,
+    }
 })

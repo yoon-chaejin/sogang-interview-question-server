@@ -2,13 +2,16 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { IntvQuestionModule } from './intv-question/intv-question.module';
 import { TagModule } from './tag/tag.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 import * as Joi from 'joi';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { MailService } from './mail/mail.service';
+import { MailModule } from './mail/mail.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,11 +31,38 @@ import * as Joi from 'joi';
       useFactory: (configService: ConfigService) => (configService.get('database')),
       inject: [ConfigService],
     }),
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          service: 'naver',
+          host: 'smtp.naver.com',
+          port: 587,
+          secure: false,
+          auth: {
+            user: configService.get('nodemailer.user'),
+            pass: configService.get('nodemailer.password'),
+          }
+        },
+        defaults: {
+          from: '"nest-modules" <modules@nestjs.com>'
+        },
+        template: {
+          dir: __dirname + '/../src/templates',
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          }
+        }
+      }),
+      inject: [ConfigService],
+    }),
     AuthModule,
     IntvQuestionModule,
     TagModule,
+    MailModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MailService],
 })
 export class AppModule {}
