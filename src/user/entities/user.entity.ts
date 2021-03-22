@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Token } from './token.entity';
 
 @Entity({name: "user", schema: ""})
 export class User {
@@ -13,4 +14,11 @@ export class User {
 
     @Column({ nullable: false, length: 100 })
     username: string;
+
+    @OneToOne(() => Token)
+    @JoinColumn()
+    token: Token;
+
+    @Column({ nullable: false, default: false})
+    isAuthenticated: Boolean;
 }
