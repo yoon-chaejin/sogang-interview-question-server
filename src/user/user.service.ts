@@ -48,4 +48,20 @@ export class UserService {
 
         return { user, token };
     }
+    
+    async authenticate(id: number, token: string) {
+        const userWithToken = await this.userRepository
+            .createQueryBuilder('user')
+            .innerJoinAndSelect('user.token', 'token')
+            .where('user.id = :id', { id: id })
+            .getOne();
+        
+        if (token === userWithToken.token.token) {
+            userWithToken.isAuthenticated = true;
+            await this.userRepository.save(userWithToken);
+            return true;
+        }
+
+        return false;
+    }
 }

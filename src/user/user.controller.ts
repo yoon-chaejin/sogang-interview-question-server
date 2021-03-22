@@ -24,4 +24,16 @@ export class UserController {
         
         return user;
     }
+
+    @Get(':id')
+    async authenticateSogangMail(@Param('id') id: number, @Query('token') token: string) {
+        const result = await this.userService.authenticate(id, token);
+
+        if (result) {
+            return 'Authentication Success';
+        }
+        else {
+            return 'Authentication Fail';
+        }
+    }
 }
