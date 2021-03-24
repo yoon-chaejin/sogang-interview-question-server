@@ -12,6 +12,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailService } from './mail/mail.service';
 import { MailModule } from './mail/mail.module';
+import { IntvAnswerModule } from './intv-answer/intv-answer.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -61,6 +62,7 @@ import { MailModule } from './mail/mail.module';
     IntvQuestionModule,
     TagModule,
     MailModule,
+    IntvAnswerModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],
