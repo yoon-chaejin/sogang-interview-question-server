@@ -16,7 +16,7 @@ export class IntvAnswer {
     @UpdateDateColumn()
     updatedDatetime: Date;
 
-    @Column()
+    @Column({ default: 0 })
     responseCount: number;
 
     @ManyToMany(() => User, user => user.responses)
