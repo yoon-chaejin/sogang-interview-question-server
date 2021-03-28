@@ -11,7 +11,7 @@ export class User {
     @Column({ nullable: false, length: 100, unique: true })
     email: string;
 
-    @Column({ nullable: false, length: 100 })
+    @Column({ nullable: false, length: 100, select: false })
     password: string;
 
     @Column({ nullable: false, length: 100 })
@@ -21,7 +21,7 @@ export class User {
     @JoinColumn()
     token: Token;
 
-    @Column({ nullable: false, default: false})
+    @Column({ nullable: false, default: false })
     isAuthenticated: Boolean;
 
     @ManyToMany(() => IntvQuestion, intvQuestion => intvQuestion.bookmarkedUsers)

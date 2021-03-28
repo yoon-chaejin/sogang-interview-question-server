@@ -25,6 +25,7 @@ export class UserController {
         return user;
     }
 
+    // Needs Refactoring (Unclear URL, No Exception Handling)
     @Get(':id')
     async authenticateSogangMail(@Param('id') id: number, @Query('token') token: string) {
         const result = await this.userService.authenticate(id, token);
@@ -35,5 +36,11 @@ export class UserController {
         else {
             return 'Authentication Fail';
         }
+    }
+
+    @Get(':id/info')
+    async findOneById(@Param('id') id: number): Promise<User> {
+        console.log('HERE');
+        return await this.userService.findOneById(id);
     }
 }
