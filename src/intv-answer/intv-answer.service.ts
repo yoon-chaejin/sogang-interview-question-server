@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult } from 'typeorm';
 import { CreateIntvAnswerDto } from './dto/create-intv-answer.dto';
 import { IntvAnswer } from './entities/intv-answer.entity';
 import { IntvAnswerRepository } from './repository/intvAnswerRepository';
@@ -27,4 +28,13 @@ export class IntvAnswerService {
         return result;
     } 
 
+    async updateIntvAnswer(id: number, content: string): Promise<IntvAnswer> {
+        const intvAnswer = await this.intvAnswerRepository.findOne(id);
+        intvAnswer.content = content;
+        return await this.intvAnswerRepository.save(intvAnswer);
+    }
+
+    async deleteIntvAnswer(id: number): Promise<DeleteResult> {
+        return await this.intvAnswerRepository.delete({ id });
+    }
 }
