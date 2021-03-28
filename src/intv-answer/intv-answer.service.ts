@@ -13,7 +13,7 @@ export class IntvAnswerService {
     ) {}
 
     async create(intvAnswerData: CreateIntvAnswerDto): Promise<IntvAnswer> {
-        const { userId, questionId, content } = intvAnswerData;
+        const { userId, intvQuestionId, content } = intvAnswerData;
 
         const intvAnswer = new IntvAnswer();
         intvAnswer.content = content;
@@ -23,7 +23,7 @@ export class IntvAnswerService {
             .createQueryBuilder()
             .relation(IntvAnswer, 'intvQuestion')
             .of(result.id)
-            .set(questionId);
+            .set(intvQuestionId);
 
         await this.intvAnswerRepository
             .createQueryBuilder()

@@ -5,7 +5,7 @@ export class CreateIntvAnswerDto {
     userId: number;
     
     @IsNumber()
-    questionId: number;
+    intvQuestionId: number;
     
     @IsString()
     content: string; 

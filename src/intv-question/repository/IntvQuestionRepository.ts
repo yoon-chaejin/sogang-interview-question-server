@@ -4,6 +4,10 @@ import { IntvQuestion } from '../entities/intv-question.entity';
 @EntityRepository(IntvQuestion)
 export class IntvQuestionRepository extends Repository<IntvQuestion> {
     findOneById(id: number) {
-        return this.findOne(id, {relations: ["tags", "intvAnswers"]});
+        return this.findOne(id, {relations: ["tags", "intvAnswers", "bookmarkedUsers"]});
+    }
+
+    findOneByIdWithBookmarkedUsers(id: number) {
+        return this.findOne(id, {relations: ["bookmarkedUsers"]})
     }
 }

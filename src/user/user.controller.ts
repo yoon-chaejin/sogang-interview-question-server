@@ -40,7 +40,6 @@ export class UserController {
 
     @Get(':id/info')
     async findOneById(@Param('id') id: number): Promise<User> {
-        console.log('HERE');
         return await this.userService.findOneById(id);
     }
 }
