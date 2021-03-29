@@ -12,6 +12,11 @@ export class UserRepository extends Repository<User> {
             .where('user.id = :id',  { id })
             .leftJoinAndSelect('user.bookmarks', 'bookmarks')
             .leftJoinAndSelect('user.intvAnswers', 'intvAnswers')
+            .leftJoinAndSelect('intvAnswers.intvQuestion', 'intvQuestion')
             .getOne();
+    }
+
+    findOneByIdWithPassword(id: number) {
+        return this.findOne({ select: ['id', 'email', 'username', 'password', 'isAuthenticated'], where: { id } });
     }
 }

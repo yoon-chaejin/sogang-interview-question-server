@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Post, UseGuards, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, Param, Query, Put, HttpStatus } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { MailService } from 'src/mail/mail.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
@@ -38,8 +40,15 @@ export class UserController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':id/info')
     async findOneById(@Param('id') id: number): Promise<User> {
         return await this.userService.findOneById(id);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Put(':id/password')
+    async updatePassword(@Param('id') userId: number, @Body() passwordData: UpdatePasswordDto): Promise<any> {
+        return await this.userService.updatePassword(userId, passwordData);
     }
 }

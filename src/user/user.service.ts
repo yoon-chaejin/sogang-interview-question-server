@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
@@ -8,6 +8,7 @@ import { TokenRepository } from './repository/TokenRepository';
 import { randomBytes } from 'crypto';
 import { Token } from './entities/token.entity';
 import { UserWithTokenDto } from './dto/user-with-token.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UserService {
@@ -69,5 +70,19 @@ export class UserService {
         }
 
         return false;
+    }
+
+    async updatePassword(userId: number, passwordData: UpdatePasswordDto): Promise<any> {
+        const user = await this.userRepository.findOneByIdWithPassword(userId);
+        const { password, newPassword } = passwordData;
+
+        if (user && await Bcrypt.compare(password, user.password)) {
+            const salt: string = await Bcrypt.genSalt();
+            const hashedPassword = await Bcrypt.hash(newPassword, salt);
+            user.password = hashedPassword;
+            await this.userRepository.save(user);
+        } else {
+            throw new UnauthorizedException();
+        }
     }
 }
