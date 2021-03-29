@@ -70,17 +70,12 @@ export class IntvQuestionService {
 
         const intvQuestion = await this.intvQuestionRepository.findOneByIdWithBookmarkedUsers(intvQuestionId);
 
-        if (intvQuestion.bookmarkedUsers.find(item => item.id === userId) === undefined) { // bookmark
-            console.log('bookmark');
+        if (intvQuestion.bookmarkedUsers.find(item => item.id == userId) == undefined) { // bookmark
             const user = await this.userService.findOneById(userId);
             intvQuestion.bookmarkedUsers = intvQuestion.bookmarkedUsers.concat(user);
             await this.intvQuestionRepository.save(intvQuestion);
         } else { // un-bookmark
-            console.log('un-bookmark');
-            console.log(intvQuestion);
-            console.log(intvQuestion.bookmarkedUsers);
-            intvQuestion.bookmarkedUsers = intvQuestion.bookmarkedUsers.filter(item => item.id !== userId)
-            console.log(intvQuestion.bookmarkedUsers);
+            intvQuestion.bookmarkedUsers = intvQuestion.bookmarkedUsers.filter(item => item.id != userId)
             await this.intvQuestionRepository.save(intvQuestion);
         }
 

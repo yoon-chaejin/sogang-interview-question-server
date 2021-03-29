@@ -7,7 +7,7 @@ export class IntvAnswer {
     @PrimaryGeneratedColumn({ name: "id" })
     id: number;
 
-    @Column({ nullable: false, length: 1000 })
+    @Column({ nullable: false, length: 1000, default: '' })
     content: string;
 
     @CreateDateColumn()
