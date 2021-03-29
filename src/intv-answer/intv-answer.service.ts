@@ -15,7 +15,11 @@ export class IntvAnswerService {
     async create(intvAnswerData: CreateIntvAnswerDto): Promise<IntvAnswer> {
         const { userId, intvQuestionId, content } = intvAnswerData;
 
-        const intvAnswer = new IntvAnswer();
+        let intvAnswer = await this.intvAnswerRepository.findOneByUserId(userId);
+        
+        if (!intvAnswer) {
+            intvAnswer = new IntvAnswer();
+        }
         intvAnswer.content = content;
         const result = await this.intvAnswerRepository.save(intvAnswer);
 

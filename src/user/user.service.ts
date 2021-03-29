@@ -27,9 +27,7 @@ export class UserService {
     }
 
     async findOneById(id: number): Promise<User> {
-        const user = await this.userRepository.findOnebyId(id);
-        console.log(user);
-        return user;
+        return await this.userRepository.findOnebyId(id);
     }
 
     async create(userData: CreateUserDto): Promise<UserWithTokenDto> {
