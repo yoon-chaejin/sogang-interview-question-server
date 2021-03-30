@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagService } from 'src/tag/tag.service';
+import { UserService } from 'src/user/user.service';
 import { CreateIntvQuestionDto } from './dto/create-intv-question.dto';
 import { CreateIntvQuestionsWithTagsDto } from './dto/create-intv-questions-with-tags.dto';
+import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 import { IntvQuestion } from './entities/intv-question.entity';
 import { IntvQuestionRepository } from './repository/IntvQuestionRepository';
 
@@ -12,6 +14,7 @@ export class IntvQuestionService {
         @InjectRepository(IntvQuestion)
         private readonly intvQuestionRepository: IntvQuestionRepository,
         private tagService: TagService,
+        private userService: UserService,
     ) {}
 
     async findAll(): Promise<IntvQuestion []> {
@@ -60,5 +63,22 @@ export class IntvQuestionService {
             .leftJoinAndSelect('intv_question.tags', 'tag')
             .where('tag.id = :id', { id: id})
             .getMany();
+    }
+
+    async updateBookmark(bookmarkData: UpdateBookmarkDto): Promise<any> {
+        const { userId, intvQuestionId } = bookmarkData;
+
+        const intvQuestion = await this.intvQuestionRepository.findOneByIdWithBookmarkedUsers(intvQuestionId);
+
+        if (intvQuestion.bookmarkedUsers.find(item => item.id == userId) == undefined) { // bookmark
+            const user = await this.userService.findOneById(userId);
+            intvQuestion.bookmarkedUsers = intvQuestion.bookmarkedUsers.concat(user);
+            await this.intvQuestionRepository.save(intvQuestion);
+        } else { // un-bookmark
+            intvQuestion.bookmarkedUsers = intvQuestion.bookmarkedUsers.filter(item => item.id != userId)
+            await this.intvQuestionRepository.save(intvQuestion);
+        }
+
+        return;
     }
 }

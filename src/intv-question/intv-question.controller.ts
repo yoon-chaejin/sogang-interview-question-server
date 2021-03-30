@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateIntvQuestionDto } from './dto/create-intv-question.dto';
 import { CreateIntvQuestionsWithTagsDto } from './dto/create-intv-questions-with-tags.dto';
+import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 import { IntvQuestion } from './entities/intv-question.entity';
 import { IntvQuestionService } from './intv-question.service';
 
@@ -34,5 +35,10 @@ export class IntvQuestionController {
     @Get('tag/:id')
     async findByTagId(@Param('id') id): Promise<IntvQuestion []> {
         return await this.intvQuestionService.findByTagId(id);
+    }
+
+    @Put('/bookmark')
+    async updateBookmark(@Body() bookmarkData: UpdateBookmarkDto): Promise<any> {
+        return await this.intvQuestionService.updateBookmark(bookmarkData);
     }
 }
