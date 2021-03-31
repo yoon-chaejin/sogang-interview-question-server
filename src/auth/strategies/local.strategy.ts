@@ -15,7 +15,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
             throw new UnauthorizedException();
         }
         if (!user.isAuthenticated) {
-            throw new HttpException('Please Authenticate your Sogang Mail', HttpStatus.UNAUTHORIZED);
+            throw new HttpException('서강 메일을 통해 본인 인증 후 로그인 해주세요.\n\n인증 메일이 오지 않는 경우, sogang-tree@naver.com으로 문의주세요.', HttpStatus.UNAUTHORIZED);
         }
         return user;
     }
