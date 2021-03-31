@@ -16,7 +16,7 @@ import { IntvAnswerModule } from './intv-answer/intv-answer.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.dev.env',
+      envFilePath: ['.dev.env', '.prod.env'],
       load: [configuration],
       isGlobal: true,
       validationSchema: Joi.object({
