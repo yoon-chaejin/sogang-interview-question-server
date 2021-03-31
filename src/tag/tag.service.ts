@@ -19,6 +19,7 @@ export class TagService {
             .select('tag.id', 'id')
             .addSelect('tag.name', 'name')
             .addSelect('COUNT("tag.id")', 'count')
+            .orderBy('tag.name')
             .getRawMany();
     }
 
