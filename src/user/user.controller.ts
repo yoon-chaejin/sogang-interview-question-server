@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, Param, Query, Put, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, Param, Query, Put, HttpStatus, NotAcceptableException, HttpException } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { MailService } from 'src/mail/mail.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,6 +20,9 @@ export class UserController {
     
     @Post()
     async create(@Body() userData: CreateUserDto): Promise<User> {
+        if (await this.userService.findOne(userData.email)) {
+            throw new HttpException({ status: HttpStatus.NOT_ACCEPTABLE, message: "이미 존재하는 아이디입니다.\nDuplicate ID"}, HttpStatus.NOT_ACCEPTABLE);
+        }
         const { user, token } = await this.userService.create(userData);
 
         this.mailService.sendSogangAuthenticationMail(user, userData.sogangMail, token.token);
