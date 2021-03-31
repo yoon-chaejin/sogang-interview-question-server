@@ -19,7 +19,7 @@ export class MailService {
         console.log('url', url);
         this.mailerService.sendMail({
             to: mail,
-            from: 'kevin3st@naver.com',
+            from: this.configService.get('nodemailer.user'),
             subject: 'SignUp Mail (subject)',
             template: 'sign-up',
             context: {
