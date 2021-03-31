@@ -20,7 +20,7 @@ export class MailService {
         this.mailerService.sendMail({
             to: mail,
             from: this.configService.get('nodemailer.user'),
-            subject: 'SignUp Mail (subject)',
+            subject: '서강트리 본인 인증 메일',
             template: 'sign-up',
             context: {
                 username: user.username,
