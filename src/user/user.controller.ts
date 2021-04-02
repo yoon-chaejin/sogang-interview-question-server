@@ -13,10 +13,10 @@ export class UserController {
         private readonly mailService: MailService,
     ) {}
 
-    @Get()
-    async findAll(): Promise<User[]> {
-        return await this.userService.findAll();
-    }
+    // @Get()
+    // async findAll(): Promise<User[]> {
+    //     return await this.userService.findAll();
+    // }
     
     @Post()
     async create(@Body() userData: CreateUserDto): Promise<User> {
