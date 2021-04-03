@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { DeleteResult } from 'typeorm';
 import { CreateIntvAnswerDto } from './dto/create-intv-answer.dto';
 import { IntvAnswer } from './entities/intv-answer.entity';
 import { IntvAnswerService } from './intv-answer.service';
 
+@UseGuards(JwtAuthGuard)
 @Controller('intv-answer')
 export class IntvAnswerController {
     constructor (
