@@ -15,7 +15,9 @@ export class IntvAnswerService {
     async create(intvAnswerData: CreateIntvAnswerDto): Promise<IntvAnswer> {
         const { userId, intvQuestionId, content } = intvAnswerData;
 
-        let intvAnswer = await this.intvAnswerRepository.findOneByUserId(userId);
+        console.log("[답변 등록]", userId, intvQuestionId, content)
+        
+        let intvAnswer = await this.intvAnswerRepository.findOneByUserId(userId, intvQuestionId);
         
         if (!intvAnswer) {
             intvAnswer = new IntvAnswer();
