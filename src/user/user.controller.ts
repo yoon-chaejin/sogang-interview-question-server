@@ -20,6 +20,9 @@ export class UserController {
     
     @Post()
     async create(@Body() userData: CreateUserDto): Promise<User> {
+        if (userData.sogangMail.indexOf('@sogang.ac.kr') < 0) {
+            throw new HttpException({ status: HttpStatus.NOT_ACCEPTABLE, message: "서강 메일로 인증해주세요\n For Sogang Univ Only"}, HttpStatus.NOT_ACCEPTABLE);
+        }
         if (await this.userService.findOne(userData.email)) {
             throw new HttpException({ status: HttpStatus.NOT_ACCEPTABLE, message: "이미 존재하는 아이디입니다.\nDuplicate ID"}, HttpStatus.NOT_ACCEPTABLE);
         }
