@@ -12,7 +12,6 @@ export class IntvQuestionRepository extends Repository<IntvQuestion> {
             .leftJoinAndSelect('intvAnswers.user', 'user')
             .where({ id })
             .getOne()
-
     }
 
     findOneByIdWithBookmarkedUsers(id: number) {

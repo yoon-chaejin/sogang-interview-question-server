@@ -61,8 +61,11 @@ export class IntvQuestionService {
         return await this.intvQuestionRepository
             .createQueryBuilder('intv_question')
             .leftJoinAndSelect('intv_question.tags', 'tag')
+            .leftJoin('intv_question.intvAnswers', 'intvAnswers')
+            .addSelect('COUNT(intvAnswers.id) AS intvAnswerCount')
             .where('tag.id = :id', { id: id})
-            .getMany();
+            .groupBy('intv_question.id')
+            .getRawMany();
     }
 
     async updateBookmark(bookmarkData: UpdateBookmarkDto): Promise<any> {
