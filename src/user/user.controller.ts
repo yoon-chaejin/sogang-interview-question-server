@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, UseGuards, Param, Query, Put, HttpStatus, 
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { MailService } from 'src/mail/mail.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
@@ -56,5 +57,11 @@ export class UserController {
     @Put(':id/password')
     async updatePassword(@Param('id') userId: number, @Body() passwordData: UpdatePasswordDto): Promise<any> {
         return await this.userService.updatePassword(userId, passwordData);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Put('/sogang-tree/administrator/reset-password/:id')
+    async resetPassword(@Param('id') userId: number, @Body() passwordData: ResetPasswordDto): Promise<any> {
+        return await this.userService.resetPassword(userId, passwordData);
     }
 }
