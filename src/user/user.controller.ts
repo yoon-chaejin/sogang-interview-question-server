@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, Param, Query, Put, HttpStatus, NotAcceptableException, HttpException } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, Param, Query, Put, HttpStatus, NotAcceptableException, HttpException, Request, UnauthorizedException } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { MailService } from 'src/mail/mail.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -49,13 +49,20 @@ export class UserController {
 
     @UseGuards(JwtAuthGuard)
     @Get(':id/info')
-    async findOneById(@Param('id') id: number): Promise<User> {
+    async findOneById(@Request() req, @Param('id') id: number): Promise<User> {
+        if (req.user.userid != id) {
+            console.error("User", req.user.userid, req.user.useremail, req.user.username, "tried an unauthorized access to User ", id);
+            throw new UnauthorizedException();
+        }
         return await this.userService.findOneById(id);
     }
 
     @UseGuards(JwtAuthGuard)
     @Put(':id/password')
-    async updatePassword(@Param('id') userId: number, @Body() passwordData: UpdatePasswordDto): Promise<any> {
+    async updatePassword(@Request() req, @Param('id') userId: number, @Body() passwordData: UpdatePasswordDto): Promise<any> {
+        if (req.user.userid != userId) {
+            throw new UnauthorizedException();
+        }
         return await this.userService.updatePassword(userId, passwordData);
     }
 

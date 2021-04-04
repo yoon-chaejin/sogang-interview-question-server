@@ -1,6 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -14,7 +14,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log("[Jwt Check] userId: ",payload.sub, ", username: ", payload.username)
-    return { userId: payload.sub, username: payload.username };
+    console.log('User Validation', payload, payload.userid, payload.username, payload.useremail);
+    if (!payload.userid || !payload.useremail || !payload.username) {
+      throw new UnauthorizedException();
+    }
+    return { userid: payload.userid, useremail: payload.useremail, username: payload.username };
   }
 }
